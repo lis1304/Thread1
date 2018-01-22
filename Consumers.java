@@ -11,8 +11,9 @@ public class Consumers extends Thread {
         while (true) {
             try {
 
+                wait();
                 System.out.println(Thread.currentThread().getName() + " Вытащил: " + Producer.queue.poll());
-                Thread.sleep(1000);
+                //Thread.sleep(1000);
 
             }
             catch (InterruptedException e) {

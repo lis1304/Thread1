@@ -22,12 +22,9 @@ public class Producer extends Thread{
 
         while (true){
 
-            try {
-                queue.add(random());
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            queue.add(random());
+            notify();
+            //Thread.sleep(500);
         }
 
     }
