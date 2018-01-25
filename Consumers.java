@@ -1,32 +1,41 @@
 package thread1;
 
 
-/**
- * Created by LIS on 18.01.2018.
- */
 public class Consumers extends Thread {
+
+    private synchronized int getElement() throws InterruptedException {
+
+        int element = 0;
+        try {
+            element = Producer.queue.poll();
+
+        } catch (NullPointerException e) {
+            wait();
+            while (true) {
+                try {
+                    element = Producer.queue.poll();
+                    notify();
+                    break;
+                } catch (NullPointerException ee) {
+                    sleep(10);
+                }
+            }
+        }
+
+        return element;
+    }
+
 
     @Override
     public void run() {
-
-
         while (true) {
             try {
-                Integer element = null;
-
-                element = Producer.queue.poll();
-                if (element == null){
-                    wait();
-                    Thread.sleep(1000);
-                    element = Producer.queue.poll();
-                    notify();
-                }
-                System.out.println(Thread.currentThread().getName() + " Вытащил: " + element);
-
-            }
-            catch (InterruptedException e) {
+                System.out.println(Thread.currentThread().getName() + " Вытащил: " + getElement()/*Producer.queue.poll()*/);
+                //Thread.sleep(1000);
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         }
     }
 }

@@ -7,9 +7,7 @@ import java.util.Queue;
 public class Producer extends Thread{
     private final int begNum = 1;
     private final int endNum = 100;
-    public static Queue<Integer> queue = new LinkedList<>();
-
-
+    public volatile static Queue<Integer> queue = new LinkedList<>();
 
     private int random(){
         int randNum=0;
@@ -19,16 +17,9 @@ public class Producer extends Thread{
 
     @Override
     public void run() {
-
-        while (true){
-
-            queue.add(random());
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            while (true) {
+                queue.add(random());
+                //Thread.sleep(500);
             }
-        }
-
     }
 }
